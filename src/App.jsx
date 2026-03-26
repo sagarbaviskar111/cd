@@ -1,19 +1,23 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import About from './pages/About';
-import ClinicalResearchCrPvDm from './pages/ClinicalResearchCrPvDm';
-import ClinicalResearchMedicalWriting from './pages/ClinicalResearchMedicalWriting';
-import ClinicalResearchPharmacovigilance from './pages/ClinicalResearchPharmacovigilance';
-import ClinicalResearchRegulatoryAffairs from './pages/ClinicalResearchRegulatoryAffairs';
-import Contact from './pages/Contact';
-import CourseCrPv from './pages/CourseCrPv';
-import Home from './pages/Home';
-import Program from './pages/Program';
+import { HelmetProvider } from 'react-helmet-async';
+
+const About = lazy(() => import('./pages/About'));
+const ClinicalResearchCrPvDm = lazy(() => import('./pages/ClinicalResearchCrPvDm'));
+const ClinicalResearchMedicalWriting = lazy(() => import('./pages/ClinicalResearchMedicalWriting'));
+const ClinicalResearchPharmacovigilance = lazy(() => import('./pages/ClinicalResearchPharmacovigilance'));
+const ClinicalResearchRegulatoryAffairs = lazy(() => import('./pages/ClinicalResearchRegulatoryAffairs'));
+const Contact = lazy(() => import('./pages/Contact'));
+const CourseCrPv = lazy(() => import('./pages/CourseCrPv'));
+const Home = lazy(() => import('./pages/Home'));
+const Program = lazy(() => import('./pages/Program'));
 
 function App() {
   return (
-    <Router>
-      <Routes>
+    <HelmetProvider>
+      <Router>
+      <Suspense fallback={<div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'100vh',fontSize:'1.5rem',color:'#667eea',fontFamily:'sans-serif'}}>Loading Clinical Programs...</div>}>
+        <Routes>
         <Route path="/about" element={<About />} />
         <Route path="/clinical-research-cr-pv-dm" element={<ClinicalResearchCrPvDm />} />
         <Route path="/clinical-research-medical-writing" element={<ClinicalResearchMedicalWriting />} />
@@ -24,7 +28,9 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/program" element={<Program />} />
       </Routes>
-    </Router>
+      </Suspense>
+      </Router>
+    </HelmetProvider>
   );
 }
 

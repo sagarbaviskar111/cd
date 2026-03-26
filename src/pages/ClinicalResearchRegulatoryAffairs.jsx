@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { BASE_URL } from '../config';
 
 const ClinicalResearchRegulatoryAffairs = () => {
   const [courseData, setCourseData] = useState(null);
@@ -7,7 +8,7 @@ const ClinicalResearchRegulatoryAffairs = () => {
     if (window.initializeTheme) window.initializeTheme(window.jQuery);
 
     // Fetch API data
-    fetch('http://localhost:5000/api/courses')
+    fetch(`${BASE_URL}/api/courses`)
       .then(res => res.json())
       .then(data => {
         // Find the object with "CRRA" key
@@ -20,8 +21,8 @@ const ClinicalResearchRegulatoryAffairs = () => {
   }, []);
 
   // Set up dynamic URLs based on fetched data
-  const brochureLink = courseData?.pdf ? `http://localhost:5000/${courseData.pdf}` : 'images/IB.pdf';
-  const feesLink = courseData?.feesPdf ? `http://localhost:5000/${courseData.feesPdf}` : 'images/payment.pdf';
+  const brochureLink = courseData?.pdf ? `${BASE_URL}/${courseData.pdf}` : 'images/IB.pdf';
+  const feesLink = courseData?.feesPdf ? `${BASE_URL}/${courseData.feesPdf}` : 'images/payment.pdf';
   const enrollLink = courseData?.enrollGoogleLink || courseData?.registerLink || 'https://docs.google.com/forms/d/e/1FAIpQLSeKvwixBD4xlWkEka-rZRHQ9YGdjTHwwvDpig4AP2AJptG-2Q/viewform?usp=header';
   const whatsappGrpLink = courseData?.whatsappLink || 'https://chat.whatsapp.com/FdjVRzRkl9e9OLi3ItW6SZ';
 
@@ -35,35 +36,36 @@ const ClinicalResearchRegulatoryAffairs = () => {
 
   const embedUrl = getEmbedUrl(courseData?.youtubeLink);
 
-  const youtubeSection = embedUrl ? `
-    <!-- Video Section -->
-    <div class="row justify-content-center mb-5">
-      <div class="col-lg-10">
-        <div class="cr-module-card p-4" style="text-align:center;">
-          <h3 class="mb-4 text-purple-800 font-bold" style="font-size:1.8rem;">Program Overview Video</h3>
-          <div class="video-container" style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 15px;">
+  const youtubeSection = embedUrl ? (
+    
+    <div className="row justify-content-center mb-5">
+      <div className="col-lg-10">
+        <div className="cr-module-card p-4" style={{"textAlign":"center"}}>
+          <h3 className="mb-4 text-purple-800 font-bold" style={{"fontSize":"1.8rem"}}>Program Overview Video</h3>
+          <div className="video-container" style={{"position":"relative","paddingBottom":"56.25%","height":"0","overflow":"hidden","borderRadius":"15px"}}>
             <iframe 
-              src="${embedUrl}" 
-              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" 
-              allowfullscreen="" 
+              src="{embedUrl}" 
+              style={{"position":"absolute","top":"0","left":"0","width":"100%","height":"100%","border":"0"}} 
+              allowFullScreen 
               title="YouTube Video">
             </iframe>
           </div>
         </div>
       </div>
     </div>
-  ` : '';
+  ) : null;
 
   return (
-    <div dangerouslySetInnerHTML={{ __html: `<div class="wrap">
-        <div class="container">
-            <div class="row justify-content-between">
-                <div class="col">
-                    <p class="mb-0 phone"><span class="fa fa-phone"></span>
+    <>
+<div className="wrap">
+        <div className="container">
+            <div className="row justify-content-between">
+                <div className="col">
+                    <p className="mb-0 phone"><span className="fa fa-phone"></span>
                         <a href="tel:8999213129">+91 8999213129</a>
                         <a href="tel:9370472071">+91 9370472071</a>
                     </p>
-                    <p class="mb-0 email"><span class="fa fa-envelope"></span>
+                    <p className="mb-0 email"><span className="fa fa-envelope"></span>
                         <a href="mailto:clinideaeducation@gmail.com">clinideaeducation@gmail.com</a> |
                         <a href="mailto:clinideaeducation@gmail.com">clinideaeducation@gmail.com</a>
                     </p>
@@ -71,37 +73,37 @@ const ClinicalResearchRegulatoryAffairs = () => {
             </div>
         </div>
     </div>
-    <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-        <div class="container">
-            <a class="navbar-brand" href="/index"><img src="./clinidea-removebg-preview.png" alt="Clinidea Education" style="height:40px; vertical-align:middle;"/> <span class="d-none d-md-inline">Clinidea Education</span></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+    <nav className="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+        <div className="container">
+            <a className="navbar-brand" href="/index"><img src="./clinidea-removebg-preview.png" alt="Clinidea Education" style={{"height":"40px","verticalAlign":"middle"}}/> <span className="d-none d-md-inline">Clinidea Education</span></a>
+            <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
                 aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="fa fa-bars"></span> Menu
+                <span className="fa fa-bars"></span> Menu
             </button>
-            <div class="collapse navbar-collapse" id="ftco-nav">
-                <ul class="navbar-nav m-auto">
-                    <li class="nav-item"><a href="/index" class="nav-link">Home</a></li>
-                    <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
-                    <li class="nav-item"><a href="/program" class="nav-link">Programs</a></li>
-                    <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+            <div className="collapse navbar-collapse" id="ftco-nav">
+                <ul className="navbar-nav m-auto">
+                    <li className="nav-item"><a href="/index" className="nav-link">Home</a></li>
+                    <li className="nav-item"><a href="/about" className="nav-link">About</a></li>
+                    <li className="nav-item"><a href="/program" className="nav-link">Programs</a></li>
+                    <li className="nav-item"><a href="/contact" className="nav-link">Contact</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <section class="hero-wrap hero-wrap-2" style="background-image: url('images/bg_2.jpg');" data-stellar-background-ratio="0.5">
-        <div class="overlay"></div>
-        <div class="container">
-            <div class="row no-gutters slider-text align-items-end">
-                <div class="col-md-9 ftco-animate pb-5">
-                    <p class="breadcrumbs mb-2"><span class="mr-2"><a href="/index">Home <i class="ion-ios-arrow-forward"></i></a></span> <span>Programs <i class="ion-ios-arrow-forward"></i></span></p>
-                    <h1 class="mb-0 bread">Clinical Research &amp; Regulatory Affairs</h1>
+    <section className="hero-wrap hero-wrap-2" style={{ backgroundImage: 'url(images/bg_2.jpg)' }} data-stellar-background-ratio="0.5">
+        <div className="overlay"></div>
+        <div className="container">
+            <div className="row no-gutters slider-text align-items-end">
+                <div className="col-md-9 ftco-animate pb-5">
+                    <p className="breadcrumbs mb-2"><span className="mr-2"><a href="/index">Home <i className="ion-ios-arrow-forward"></i></a></span> <span>Programs <i className="ion-ios-arrow-forward"></i></span></p>
+                    <h1 className="mb-0 bread">Clinical Research &amp; Regulatory Affairs</h1>
                 </div>
             </div>
         </div>
     </section>
 
-<style>
+<style>{`
   .cr-modern-wrap {
     background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
     padding: 80px 0;
@@ -364,28 +366,28 @@ const ClinicalResearchRegulatoryAffairs = () => {
       margin: 10px 0;
     }
   }
-</style>
+`}</style>
 
-<div class="cr-modern-wrap">
-  <div class="container">
-    <div class="row mb-5 text-center">
-      <div class="col-lg-10 offset-lg-1">
-        <span class="cr-header-badge">Premium Certification Program</span>
-        <h1 class="cr-title">Advanced Certification Course</h1>
-        <h2 class="cr-subtitle">in Clinical Research &amp; Regulatory Affairs</h2>
-        <p class="cr-desc">This 6-month online, live mentorship-based program is tailored for individuals aspiring to build a strong career in Clinical Research with a deep understanding of Regulatory Affairs. Bridge the academic–industry gap and master global regulatory expectations required for product approvals and compliance.</p>
+<div className="cr-modern-wrap">
+  <div className="container">
+    <div className="row mb-5 text-center">
+      <div className="col-lg-10 offset-lg-1">
+        <span className="cr-header-badge">Premium Certification Program</span>
+        <h1 className="cr-title">Advanced Certification Course</h1>
+        <h2 className="cr-subtitle">in Clinical Research &amp; Regulatory Affairs</h2>
+        <p className="cr-desc">This 6-month online, live mentorship-based program is tailored for individuals aspiring to build a strong career in Clinical Research with a deep understanding of Regulatory Affairs. Bridge the academic–industry gap and master global regulatory expectations required for product approvals and compliance.</p>
       </div>
     </div>
 
-    <div class="row justify-content-center mb-5">
-      <!-- Module 1 -->
-      <div class="col-lg-5 col-md-6 mb-4">
-        <div class="cr-module-card">
-          <div class="cr-icon-box cr-icon-1">
+    <div className="row justify-content-center mb-5">
+      
+      <div className="col-lg-5 col-md-6 mb-4">
+        <div className="cr-module-card">
+          <div className="cr-icon-box cr-icon-1">
             🔬
           </div>
-          <h3 class="cr-module-title">Clinical Research</h3>
-          <ul class="cr-list">
+          <h3 className="cr-module-title">Clinical Research</h3>
+          <ul className="cr-list">
             <li>Drug Development Lifecycle &amp; Trial Phases (I–IV)</li>
             <li>Global Guidelines: ICH-GCP, Indian GCP, FDA, EMA</li>
             <li>Protocol Design, Ethics Committees &amp; Site Selection</li>
@@ -395,14 +397,14 @@ const ClinicalResearchRegulatoryAffairs = () => {
           </ul>
         </div>
       </div>
-      <!-- Module 2 -->
-      <div class="col-lg-5 col-md-6 mb-4">
-        <div class="cr-module-card">
-          <div class="cr-icon-box cr-icon-2">
+      
+      <div className="col-lg-5 col-md-6 mb-4">
+        <div className="cr-module-card">
+          <div className="cr-icon-box cr-icon-2">
             📑
           </div>
-          <h3 class="cr-module-title">Regulatory Affairs</h3>
-          <ul class="cr-list">
+          <h3 className="cr-module-title">Regulatory Affairs</h3>
+          <ul className="cr-list">
             <li>Overview of Regulatory Affairs &amp; Health Authorities</li>
             <li>Drug Approval: India (CDSCO), US (FDA), EU (EMA)</li>
             <li>Dossier Compilation: CTD, eCTD Format</li>
@@ -414,63 +416,63 @@ const ClinicalResearchRegulatoryAffairs = () => {
       </div>
     </div>
 
-    ${youtubeSection}
+    {youtubeSection}
 
-    <!-- Details and Outcomes -->
-    <div class="row align-items-stretch mb-5">
-      <div class="col-lg-6 mb-4">
-        <div class="cr-details-box d-flex flex-column justify-content-center">
-          <h3 class="mb-4" style="font-weight:700; font-size:1.8rem;">Program Details</h3>
+    
+    <div className="row align-items-stretch mb-5">
+      <div className="col-lg-6 mb-4">
+        <div className="cr-details-box d-flex flex-column justify-content-center">
+          <h3 className="mb-4" style={{"fontWeight":"700","fontSize":"1.8rem"}}>Program Details</h3>
           
-          <div class="cr-detail-item">
-            <div class="cr-detail-icon">⏳</div>
-            <div class="cr-detail-text">
+          <div className="cr-detail-item">
+            <div className="cr-detail-icon">⏳</div>
+            <div className="cr-detail-text">
               <h4>Duration</h4>
               <p>6 Months</p>
             </div>
           </div>
           
-          <div class="cr-detail-item">
-            <div class="cr-detail-icon">💻</div>
-            <div class="cr-detail-text">
+          <div className="cr-detail-item">
+            <div className="cr-detail-icon">💻</div>
+            <div className="cr-detail-text">
               <h4>Mode</h4>
               <p>100% Online (Live)</p>
             </div>
           </div>
           
-          <div class="cr-detail-item">
-            <div class="cr-detail-icon">🎓</div>
-            <div class="cr-detail-text">
+          <div className="cr-detail-item">
+            <div className="cr-detail-icon">🎓</div>
+            <div className="cr-detail-text">
               <h4>Eligibility</h4>
-              <p style="font-size:16px;">BPharm, MPharm, Pharm.D, BSc, Biotech &amp; Lifesciences</p>
+              <p style={{"fontSize":"16px"}}>BPharm, MPharm, Pharm.D, BSc, Biotech &amp; Lifesciences</p>
             </div>
           </div>
         </div>
       </div>
       
-      <div class="col-lg-6">
-        <div class="cr-outcomes-wrap d-flex flex-column justify-content-center h-100">
-          <h3 class="mb-4" style="font-weight:800; font-size:2rem; color:#1a202c;">Career Outcomes</h3>
+      <div className="col-lg-6">
+        <div className="cr-outcomes-wrap d-flex flex-column justify-content-center h-100">
+          <h3 className="mb-4" style={{"fontWeight":"800","fontSize":"2rem","color":"#1a202c"}}>Career Outcomes</h3>
           
-          <div class="cr-outcome-card">
-            <div class="cr-outcome-icon">📜</div>
-            <div class="cr-outcome-text">
+          <div className="cr-outcome-card">
+            <div className="cr-outcome-icon">📜</div>
+            <div className="cr-outcome-text">
               <h4>Industry Certification</h4>
               <p>Clinical Research &amp; Regulatory Affairs</p>
             </div>
           </div>
           
-          <div class="cr-outcome-card">
-            <div class="cr-outcome-icon">🎯</div>
-            <div class="cr-outcome-text">
+          <div className="cr-outcome-card">
+            <div className="cr-outcome-icon">🎯</div>
+            <div className="cr-outcome-text">
               <h4>Diverse Opportunities</h4>
               <p>Regulatory Associate, CRC, Labeling Executive</p>
             </div>
           </div>
           
-          <div class="cr-outcome-card">
-            <div class="cr-outcome-icon">💼</div>
-            <div class="cr-outcome-text">
+          <div className="cr-outcome-card">
+            <div className="cr-outcome-icon">💼</div>
+            <div className="cr-outcome-text">
               <h4>Placement Support</h4>
               <p>Mock Interviews, Dossiers &amp; 100% Assistance</p>
             </div>
@@ -479,23 +481,23 @@ const ClinicalResearchRegulatoryAffairs = () => {
       </div>
     </div>
 
-    <!-- Call to Action -->
-    <div class="row">
-      <div class="col-12">
-        <div class="cr-cta-wrap">
-          <h3 class="mb-5" style="font-size:2.2rem; font-weight:800; color:#2d3748;">Ready to Accelerate Your Career?</h3>
-          <div class="d-flex flex-wrap justify-content-center">
-            <a href="${enrollLink}" target="_blank" rel="noopener noreferrer" class="cr-btn cr-btn-primary">
-              <span class="cr-btn-icon">🚀</span> Enroll Now
+    
+    <div className="row">
+      <div className="col-12">
+        <div className="cr-cta-wrap">
+          <h3 className="mb-5" style={{"fontSize":"2.2rem","fontWeight":"800","color":"#2d3748"}}>Ready to Accelerate Your Career?</h3>
+          <div className="d-flex flex-wrap justify-content-center">
+            <a href={enrollLink} target="_blank" rel="noopener noreferrer" className="cr-btn cr-btn-primary">
+              <span className="cr-btn-icon">🚀</span> Enroll Now
             </a>
-            <a href="${brochureLink}" download target="_blank" rel="noopener noreferrer" class="cr-btn cr-btn-secondary">
-              <span class="cr-btn-icon">📄</span> Download Brochure
+            <a href={brochureLink} download target="_blank" rel="noopener noreferrer" className="cr-btn cr-btn-secondary">
+              <span className="cr-btn-icon">📄</span> Download Brochure
             </a>
-            <a href="${feesLink}" download target="_blank" rel="noopener noreferrer" class="cr-btn cr-btn-secondary">
-              <span class="cr-btn-icon">💳</span> Fees Details
+            <a href={feesLink} download target="_blank" rel="noopener noreferrer" className="cr-btn cr-btn-secondary">
+              <span className="cr-btn-icon">💳</span> Fees Details
             </a>
-            <a href="${whatsappGrpLink}" target="_blank" rel="noopener noreferrer" class="cr-btn cr-btn-whatsapp">
-              <span class="cr-btn-icon">💬</span> Join WhatsApp
+            <a href={whatsappGrpLink} target="_blank" rel="noopener noreferrer" className="cr-btn cr-btn-whatsapp">
+              <span className="cr-btn-icon">💬</span> Join WhatsApp
             </a>
           </div>
         </div>
@@ -505,39 +507,40 @@ const ClinicalResearchRegulatoryAffairs = () => {
   </div>
 </div>
 
-    <footer class="footer">
-        <div class="container-fluid px-lg-5">
-            <div class="row">
-                <div class="col-md-9 py-5">
-                    <div class="row">
-                        <div class="col-md-4 mb-md-0 mb-4">
-                            <h2 class="footer-heading">About Clinidea</h2>
+    <footer className="footer">
+        <div className="container-fluid px-lg-5">
+            <div className="row">
+                <div className="col-md-9 py-5">
+                    <div className="row">
+                        <div className="col-md-4 mb-md-0 mb-4">
+                            <h2 className="footer-heading">About Clinidea</h2>
                             <p>Empowering students with industry insights and career-focused mentorship in Clinical Research, Pharmacovigilance, and Clinical Data Management.</p>
                         </div>
-            <div class="col-md-4 mb-md-0 mb-4">
-              <h2 class="footer-heading">Programs</h2>
-              <ul class="list-unstyled">
-                <li><a href="/course-cr-pv" class="py-1 d-block">Clinical Research & Pharmacovigilance</a></li>
-                <li><a href="/course-cr-pv-cdm" class="py-1 d-block">Clinical Research & Data Management</a></li>
-                <li><a href="/clinical-research-cr-pv-dm" class="py-1 d-block">Clinical Research, Pharmacovigilance & Data Management</a></li>
-                <li><a href="/course-cr-regulatory" class="py-1 d-block">Clinical Research & Regulatory Affairs</a></li>
-                <li><a href="/clinical-research-medical-writing" class="py-1 d-block">Clinical Research & Medical Writing</a></li>
-                <li><a href="/program" class="py-1 d-block">All Programs</a></li>
+            <div className="col-md-4 mb-md-0 mb-4">
+              <h2 className="footer-heading">Programs</h2>
+              <ul className="list-unstyled">
+                <li><a href="/course-cr-pv" className="py-1 d-block">Clinical Research & Pharmacovigilance</a></li>
+                <li><a href="/course-cr-pv-cdm" className="py-1 d-block">Clinical Research & Data Management</a></li>
+                <li><a href="/clinical-research-cr-pv-dm" className="py-1 d-block">Clinical Research, Pharmacovigilance & Data Management</a></li>
+                <li><a href="/course-cr-regulatory" className="py-1 d-block">Clinical Research & Regulatory Affairs</a></li>
+                <li><a href="/clinical-research-medical-writing" className="py-1 d-block">Clinical Research & Medical Writing</a></li>
+                <li><a href="/program" className="py-1 d-block">All Programs</a></li>
               </ul>
             </div>
-                        <div class="col-md-4 mb-md-0 mb-4">
-                            <h2 class="footer-heading">Contact</h2>
-                            <ul class="list-unstyled">
-                                <li><a href="mailto:clinideaeducation@gmail.com" class="py-1 d-block">clinideaeducation@gmail.com</a></li>
-                                <li><a href="tel:9370472071" class="py-1 d-block">9370472071</a></li>
-                                <li><a href="tel:8999213129" class="py-1 d-block">8999213129</a></li>
+                        <div className="col-md-4 mb-md-0 mb-4">
+                            <h2 className="footer-heading">Contact</h2>
+                            <ul className="list-unstyled">
+                                <li><a href="mailto:clinideaeducation@gmail.com" className="py-1 d-block">clinideaeducation@gmail.com</a></li>
+                                <li><a href="tel:9370472071" className="py-1 d-block">9370472071</a></li>
+                                <li><a href="tel:8999213129" className="py-1 d-block">8999213129</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </footer>` }} />
+    </footer>
+</>
   );
 };
 

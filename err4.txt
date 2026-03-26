@@ -1,0 +1,40 @@
+
+> cd@0.0.0 build
+> vite build
+
+[36mvite v7.3.1 [32mbuilding client environment for production...[36m[39m
+transforming...
+[32m✓[39m 23 modules transformed.
+[31m✗[39m Build failed in 396ms
+[31merror during build:
+[31m[vite:esbuild] Transform failed with 2 errors:
+E:/cd/src/pages/ClinicalResearchCrPvDm.jsx:519:2: ERROR: Unexpected closing "div" tag does not match opening fragment tag
+E:/cd/src/pages/ClinicalResearchCrPvDm.jsx:521:12: ERROR: Expected ")" but found "className"[31m
+file: [36mE:/cd/src/pages/ClinicalResearchCrPvDm.jsx:519:2[31m
+[33m
+[33mUnexpected closing "div" tag does not match opening fragment tag[33m
+517 |      
+518 |    </div>
+519 |  </div>
+    |    ^
+520 |  
+521 |      <footer className="footer">
+
+[33mExpected ")" but found "className"[33m
+519 |  </div>
+520 |  
+521 |      <footer className="footer">
+    |              ^
+522 |          <div className="container-fluid px-lg-5">
+523 |              <div className="row">
+[31m
+    at failureErrorWithLog (E:\cd\node_modules\esbuild\lib\main.js:1467:15)
+    at E:\cd\node_modules\esbuild\lib\main.js:736:50
+    at responseCallbacks.<computed> (E:\cd\node_modules\esbuild\lib\main.js:603:9)
+    at handleIncomingPacket (E:\cd\node_modules\esbuild\lib\main.js:658:12)
+    at Socket.readFromStdout (E:\cd\node_modules\esbuild\lib\main.js:581:7)
+    at Socket.emit (node:events:524:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:191:23)[39m

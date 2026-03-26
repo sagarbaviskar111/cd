@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/autoplay";
 import { Autoplay } from "swiper/modules";
 import "../../public/css/StudentSlider.css";
+import { BASE_URL } from '../config';
 
 const Home = () => {
 
@@ -12,25 +14,37 @@ const Home = () => {
   const [studentImages, setStudentImages] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:5000/api/admissionopen')
+    if (window.initializeTheme) {
+      setTimeout(() => {
+        window.initializeTheme(window.jQuery);
+      }, 500);
+    }
+
+    fetch(`${BASE_URL}/api/admissionopen`)
       .then(res => res.json())
       .then(data => {
         if (data && Object.keys(data).length > 0) {
-          setAdmissionData(data);
+          // Hide if title/description is empty or just generic placeholders
+          if (data.title && data.title.trim() !== "" && data.title !== "undefined" && data.title !== "Add New Admission" && data.title !== "Add New Event Banner") {
+             setAdmissionData(data);
+          }
         }
       })
       .catch(err => console.warn("API Error for admission:", err.message));
 
-    fetch('http://localhost:5000/api/eventbanner')
+    fetch(`${BASE_URL}/api/eventbanner`)
       .then(res => res.json())
       .then(data => {
         if (data && Object.keys(data).length > 0) {
-          setEventData(data);
+          // Hide if eventName is empty or just the placeholder text
+          if (data.eventName && data.eventName.trim() !== "" && data.eventName !== "undefined" && !data.eventName.includes("Add New Event Banner") && data.eventName !== "Add New Event") {
+             setEventData(data);
+          }
         }
       })
       .catch(err => console.warn("API Error for event banner:", err.message));
 
-    fetch('http://localhost:5000/api/studentsimg')
+    fetch(`${BASE_URL}/api/studentsimg`)
       .then(res => res.json())
       .then(data => {
         if (data && Array.isArray(data) && data.length > 0) {
@@ -42,16 +56,21 @@ const Home = () => {
 
   return (
     <div>
-      <div dangerouslySetInnerHTML={{
-        __html: `<div class="wrap">
-    <div class="container">
-      <div class="row justify-content-between">
-        <div class="col">
-          <p class="mb-0 phone"><span class="fa fa-phone"></span>
+      <Helmet>
+        <title>Clinidea Education | Clinical Research & Pharmacovigilance Courses</title>
+        <meta name="description" content="Advance your career with Clinidea Education. We offer industry-aligned certification programs in Clinical Research, Pharmacovigilance, Data Management, and Regulatory Affairs." />
+        <meta name="keywords" content="Clinical Research, Pharmacovigilance, Clinical Data Management, Regulatory Affairs, Medical Writing, Clinidea" />
+      </Helmet>
+      <>
+<div className="wrap">
+    <div className="container">
+      <div className="row justify-content-between">
+        <div className="col">
+          <p className="mb-0 phone"><span className="fa fa-phone"></span>
             <a href="tel:8999213129">+91 8999213129</a>
             <a href="tel:9370472071">+91 9370472071</a>
           </p>
-          <p class="mb-0 email"><span class="fa fa-envelope"></span>
+          <p className="mb-0 email"><span className="fa fa-envelope"></span>
             <a href="mailto:clinideaeducation@gmail.com">clinideaeducation@gmail.com</a> |
             <a href="mailto:clinideaeducation@gmail.com">clinideaeducation@gmail.com</a>
           </p>
@@ -60,47 +79,47 @@ const Home = () => {
     </div>
   </div>
 
-  <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
-    <div class="container">
-            <a class="navbar-brand" href="/index"><span class="brand-text">Clinidea <span class="brand-accent">Education</span></span></a>
-      <form action="#" class="searchform order-sm-start order-lg-last">
-        <div class="form-group d-flex">
-          <input type="text" class="form-control pl-3" placeholder="Search" aria-label="Search">
-          <button type="submit" class="form-control search"><span class="fa fa-search"></span></button>
+  <nav className="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
+    <div className="container">
+            <a className="navbar-brand" href="/index"><span className="brand-text">Clinidea <span className="brand-accent">Education</span></span></a>
+      <form action="#" className="searchform order-sm-start order-lg-last">
+        <div className="form-group d-flex">
+          <input type="text" className="form-control pl-3" placeholder="Search" aria-label="Search" />
+          <button type="submit" className="form-control search"><span className="fa fa-search"></span></button>
         </div>
       </form>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
+      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav"
         aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="fa fa-bars"></span> Menu
+        <span className="fa fa-bars"></span> Menu
       </button>
-      <div class="collapse navbar-collapse" id="ftco-nav">
-        <ul class="navbar-nav m-auto">
-          <li class="nav-item active"><a href="/index" class="nav-link">Home</a></li>
-          <li class="nav-item"><a href="/about" class="nav-link">About</a></li>
-          <li class="nav-item"><a href="/program" class="nav-link">Programs</a></li>
-          <li class="nav-item"><a href="/contact" class="nav-link">Contact</a></li>
+      <div className="collapse navbar-collapse" id="ftco-nav">
+        <ul className="navbar-nav m-auto">
+          <li className="nav-item active"><a href="/index" className="nav-link">Home</a></li>
+          <li className="nav-item"><a href="/about" className="nav-link">About</a></li>
+          <li className="nav-item"><a href="/program" className="nav-link">Programs</a></li>
+          <li className="nav-item"><a href="/contact" className="nav-link">Contact</a></li>
         </ul>
       </div>
     </div>
   </nav>
-  <!-- END nav -->
+  
 
-  <div class="hero-wrap">
-    <div class="home-slider owl-carousel">
-      <div class="slider-item" style="background-image:url(images/bg_1.jpg);" role="img"
+  <div className="hero-wrap">
+    <div className="home-slider owl-carousel">
+      <div className="slider-item" style={{ backgroundImage: 'url(/images/bg_1.jpg)' }} role="img"
         aria-label="Mentorship transforming aspirations">
-        <div class="overlay"></div>
-        <div class="container">
-          <div class="row no-gutters slider-text align-items-center justify-content-center">
-            <div class="col-md-10 ftco-animate">
-              <div class="text w-100 text-center">
+        <div className="overlay"></div>
+        <div className="container">
+          <div className="row no-gutters slider-text align-items-center justify-content-center">
+            <div className="col-md-10 ftco-animate">
+              <div className="text w-100 text-center">
                 <h2>Mentorship That Transforms Aspirations into Careers</h2>
-                <h1 class="mb-4">Your Gateway to a Successful Career in Life Sciences</h1>
-                <div class="hero-ctas">
-                  <a href="https://chat.whatsapp.com/Iq1pCFeC7CN8AJN9O71pLh" class="btn btn-green mx-2" target="_blank">Join Our WhatsApp Group</a>
-                  <a href="#courseSection" class="btn btn-white mx-2">Find Course</a>
-                  <a href="#RecentPlacement" class="btn btn-white mx-2">Recent Placement</a>
-                  <a href="/contact" class="btn btn-white mx-2">Upcoming Batches</a>
+                <h1 className="mb-4">Your Gateway to a Successful Career in Life Sciences</h1>
+                <div className="hero-ctas">
+                  <a href="https://chat.whatsapp.com/Iq1pCFeC7CN8AJN9O71pLh" className="btn btn-green mx-2" target="_blank">Join Our WhatsApp Group</a>
+                  <a href="#courseSection" className="btn btn-white mx-2">Find Course</a>
+                  <a href="#RecentPlacement" className="btn btn-white mx-2">Recent Placement</a>
+                  <a href="/contact" className="btn btn-white mx-2">Upcoming Batches</a>
                 </div>
 
               </div>
@@ -109,21 +128,21 @@ const Home = () => {
         </div>
       </div>
 
-      <div class="slider-item" style="background-image:url(images/bg_2.jpg);" role="img"
+      <div className="slider-item" style={{ backgroundImage: 'url(/images/bg_2.jpg)' }} role="img"
         aria-label="Bridging education and industry">
-        <div class="overlay"></div>
-        <div class="container">
-          <div class="row no-gutters slider-text align-items-center justify-content-center">
-            <div class="col-md-10 ftco-animate">
-              <div class="text w-100 text-center">
+        <div className="overlay"></div>
+        <div className="container">
+          <div className="row no-gutters slider-text align-items-center justify-content-center">
+            <div className="col-md-10 ftco-animate">
+              <div className="text w-100 text-center">
                 <h2>Bridging the Gap Between Education & Industry</h2>
-                <h1 class="mb-4">Get Personalized Mentorship & Job-Ready Skills</h1>
-                <!-- <p><a href="/programs" class="btn btn-white">Explore Our Programs</a></p> -->
-                <div class="hero-ctas">
-                  <a href="https://chat.whatsapp.com/Iq1pCFeC7CN8AJN9O71pLh" class="btn btn-green mx-2" target="_blank">Join Our WhatsApp Group</a>
-                  <a href="#courseSection" class="btn btn-white mx-2">Find Course</a>
-                  <a href="#RecentPlacement" class="btn btn-white mx-2">Recent Placement</a>
-                  <a href="/contact" class="btn btn-white mx-2">Upcoming Batches</a>
+                <h1 className="mb-4">Get Personalized Mentorship & Job-Ready Skills</h1>
+                
+                <div className="hero-ctas">
+                  <a href="https://chat.whatsapp.com/Iq1pCFeC7CN8AJN9O71pLh" className="btn btn-green mx-2" target="_blank">Join Our WhatsApp Group</a>
+                  <a href="#courseSection" className="btn btn-white mx-2">Find Course</a>
+                  <a href="#RecentPlacement" className="btn btn-white mx-2">Recent Placement</a>
+                  <a href="/contact" className="btn btn-white mx-2">Upcoming Batches</a>
                 </div>
 
               </div>
@@ -132,20 +151,20 @@ const Home = () => {
         </div>
       </div>
 
-      <div class="slider-item" style="background-image:url(images/bg_3.jpg);" role="img"
+      <div className="slider-item" style={{ backgroundImage: 'url(/images/bg_3.jpg)' }} role="img"
         aria-label="Empowering you with knowledge">
-        <div class="overlay"></div>
-        <div class="container">
-          <div class="row no-gutters slider-text align-items-center justify-content-center">
-            <div class="col-md-10 ftco-animate">
-              <div class="text w-100 text-center">
+        <div className="overlay"></div>
+        <div className="container">
+          <div className="row no-gutters slider-text align-items-center justify-content-center">
+            <div className="col-md-10 ftco-animate">
+              <div className="text w-100 text-center">
                 <h2>Welcome to Clinidea Education</h2>
-                <h1 class="mb-4">Empowering You with Knowledge, Skills & Confidence</h1>
-                <div class="hero-ctas">
-                  <a href="https://chat.whatsapp.com/Iq1pCFeC7CN8AJN9O71pLh" class="btn btn-green mx-2" target="_blank">Join Our WhatsApp Group</a>
-                  <a href="#courseSection" class="btn btn-white mx-2">Find Course</a>
-                  <a href="#RecentPlacement" class="btn btn-white mx-2">Recent Placement</a>
-                  <a href="/contact" class="btn btn-white mx-2">Upcoming Batches</a>
+                <h1 className="mb-4">Empowering You with Knowledge, Skills & Confidence</h1>
+                <div className="hero-ctas">
+                  <a href="https://chat.whatsapp.com/Iq1pCFeC7CN8AJN9O71pLh" className="btn btn-green mx-2" target="_blank">Join Our WhatsApp Group</a>
+                  <a href="#courseSection" className="btn btn-white mx-2">Find Course</a>
+                  <a href="#RecentPlacement" className="btn btn-white mx-2">Recent Placement</a>
+                  <a href="/contact" className="btn btn-white mx-2">Upcoming Batches</a>
                 </div>
 
               </div>
@@ -156,42 +175,43 @@ const Home = () => {
     </div>
   </div>
 
-  <section class="intro py-5 bg-light">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="intro-box w-100 d-flex">
-            <div class="icon d-flex align-items-center justify-content-center">
-              <span class="fa fa-phone"></span>
+  <section className="intro py-5 bg-light">
+    <div className="container">
+      <div className="row">
+        <div className="col-md-4">
+          <div className="intro-box w-100 d-flex">
+            <div className="icon d-flex align-items-center justify-content-center">
+              <span className="fa fa-phone"></span>
             </div>
-            <div class="text pl-3">
-              <h4 class="mb-0">Call us: +91 9370472071</h4>
-              <h4 class="mb-0">Call us: +91 8999213129</h4>
+            <div className="text pl-3">
+              <h4 className="mb-0">Call us: +91 9370472071</h4>
+              <h4 className="mb-0">Call us: +91 8999213129</h4>
               <span>Email: <a href="mailto:clinideaeducation@gmail.com">clinideaeducation@gmail.com</a></span>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="intro-box w-100 d-flex">
-            <div class="icon d-flex align-items-center justify-content-center">
-              <span class="fa fa-clock-o"></span>
+        <div className="col-md-4">
+          <div className="intro-box w-100 d-flex">
+            <div className="icon d-flex align-items-center justify-content-center">
+              <span className="fa fa-clock-o"></span>
             </div>
-            <div class="text pl-3">
-              <h4 class="mb-0">Program Schedule</h4>
+            <div className="text pl-3">
+              <h4 className="mb-0">Program Schedule</h4>
               <span>Flexible Online Sessions to Fit Your Needs</span>
             </div>
           </div>
         </div>
-        <div class="col-md-4">
-          <div class="intro-box w-100">
-            <p class="mb-0"><a href="/contact" class="btn btn-primary">Join Our Program</a></p>
+        <div className="col-md-4">
+          <div className="intro-box w-100">
+            <p className="mb-0"><a href="/contact" className="btn btn-primary">Join Our Program</a></p>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  ` }} />
+  
+</>
 
       {admissionData && (
         <section className="ftco-section banner-section" style={{ background: 'linear-gradient(135deg, #4b6cb7 0%, #182848 100%)', color: 'white', padding: '5em 0', marginBottom: '3em' }}>
@@ -257,23 +277,23 @@ const Home = () => {
         </section>
       )}
 
-      <div dangerouslySetInnerHTML={{
-        __html: `<section id="courseSection" className="ftco-section">
-    <!-- <div class="container"> -->
-      <div class="row justify-content-center pb-5 mb-3">
-        <div class="col-md-8 heading-section text-center ftco-animate">
+      <>
+<section id="courseSection" className="ftco-section">
+    
+      <div className="row justify-content-center pb-5 mb-3">
+        <div className="col-md-8 heading-section text-center ftco-animate">
           <h2>Clinidea Education Advanced Certification Course</h2>
-          <span class="subheading">Transforming Aspirations into Careers</span>
+          <span className="subheading">Transforming Aspirations into Careers</span>
         </div>
       </div>
 
-      <!-- <div class="course-card"> -->
-      <div class="course-cards-container">
+      
+      <div className="course-cards-container">
 
-        <!-- Course 1 -->
-        <div class="course-card">
-          <div class="card-image" style="background-image: url('images/pharmacovigilance.jpg');"></div>
-          <div class="card-content">
+        
+        <div className="course-card">
+          <div className="card-image" style={{ backgroundImage: 'url(images/pharmacovigilance.jpg)' }}></div>
+          <div className="card-content">
             <h3>Clinical Research & Pharmacovigilance</h3>
             <p>Learn drug safety, AE reporting, MedDRA coding, signal detection, and global PV regulations in a 6-month
               live mentorship program.</p>
@@ -283,16 +303,16 @@ const Home = () => {
               <li>🎓 Eligibility: BPharm, MSc, MBBS, etc.</li>
               <li>💼 100% Placement Support</li>
             </ul>
-            <a href="/clinical-research-pharmacovigilance" class="btn-course">View Details</a>
+            <a href="/clinical-research-pharmacovigilance" className="btn-course">View Details</a>
           </div>
         </div>
 
 
 
-        <!-- Course 2 -->
-        <div class="course-card">
-          <div class="card-image" style="background-image: url('images/combined_course.jpg');"></div>
-          <div class="card-content">
+        
+        <div className="course-card">
+          <div className="card-image" style={{ backgroundImage: 'url(images/combined_course.jpg)' }}></div>
+          <div className="card-content">
             <h3>Clinical Research &amp; Data Management</h3>
             <p>Get 3-in-1 expertise for Clinical Research, Pharmacovigilance & Data Management, perfect for
               multidisciplinary career growth.</p>
@@ -302,14 +322,14 @@ const Home = () => {
               <li>🎓 Eligibility: BPharm, MSc, MBBS, etc.</li>
               <li>💼 100% Placement Support</li>
             </ul>
-            <a href="/course-cr-pv" class="btn-course">View Details</a>
+            <a href="/course-cr-pv" className="btn-course">View Details</a>
           </div>
         </div>
 
-        <!-- New combined course: Clinical Research, Pharmacovigilance & Data Management -->
-        <div class="course-card">
-          <div class="card-image" style="background-image: url('images/combined_course.jpg');"></div>
-          <div class="card-content">
+        
+        <div className="course-card">
+          <div className="card-image" style={{ backgroundImage: 'url(images/combined_course.jpg)' }}></div>
+          <div className="card-content">
             <h3>Clinical Research, Pharmacovigilance &amp; Data Management</h3>
             <p>A comprehensive program covering Clinical Research, Pharmacovigilance and Data Management for
               multidisciplinary career growth.</p>
@@ -319,16 +339,16 @@ const Home = () => {
               <li>🎓 Eligibility: BPharm, MSc, MBBS, etc.</li>
               <li>💼 100% Placement Support</li>
             </ul>
-            <a href="/clinical-research-cr-pv-dm" class="btn-course">View Details</a>
+            <a href="/clinical-research-cr-pv-dm" className="btn-course">View Details</a>
           </div>
         </div>
 
-        <!-- clinical-research-medical-writing.html -->
+        
 
-        <!-- Course 3 -->
-        <div class="course-card">
-          <div class="card-image" style="background-image: url('images/regulatory_affairs.jpg');"></div>
-          <div class="card-content">
+        
+        <div className="course-card">
+          <div className="card-image" style={{ backgroundImage: 'url(images/regulatory_affairs.jpg)' }}></div>
+          <div className="card-content">
             <h3>Clinical Research & Regulatory Affairs</h3>
             <p>Explore regulatory pathways, global guidelines, NDA submissions, and compliance strategies in a 6-month
               mentorship program.</p>
@@ -338,15 +358,15 @@ const Home = () => {
               <li>🎓 Eligibility: BPharm, MSc, MBBS, etc.</li>
               <li>💼 100% Placement Support</li>
             </ul>
-            <a href="/clinical-research-regulatory-affairs" class="btn-course">View Details</a>
+            <a href="/clinical-research-regulatory-affairs" className="btn-course">View Details</a>
           </div>
         </div>
 
 
-        <!-- Course 4 -->
-        <div class="course-card">
-          <div class="card-image" style="background-image: url('images/medical_writing.jpg');"></div>
-          <div class="card-content">
+        
+        <div className="course-card">
+          <div className="card-image" style={{ backgroundImage: 'url(images/medical_writing.jpg)' }}></div>
+          <div className="card-content">
             <h3>Clinical Research & Medical Writing</h3>
             <p>Master protocol writing, CSR creation, scientific manuscripts, and regulatory documents in this 6-month
               live online program.</p>
@@ -356,65 +376,65 @@ const Home = () => {
               <li>🎓 Eligibility: BPharm, MSc, MBBS, etc.</li>
               <li>💼 100% Placement Support</li>
             </ul>
-            <a href="/clinical-research-medical-writing" class="btn-course">View Details</a>
+            <a href="/clinical-research-medical-writing" className="btn-course">View Details</a>
           </div>
         </div>
 
       </div>
   </section>
 
-  <section class="ftco-section">
-    <div class="container">
-      <div class="row justify-content-center pb-5 mb-3">
-        <div class="col-md-7 heading-section text-center ftco-animate">
+  <section className="ftco-section">
+    <div className="container">
+      <div className="row justify-content-center pb-5 mb-3">
+        <div className="col-md-7 heading-section text-center ftco-animate">
           <h2>We can help you build your career</h2>
-          <span class="subheading">We offer Mentorship Programs</span>
+          <span className="subheading">We offer Mentorship Programs</span>
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
-          <div class="d-block text-center">
-            <div class="icon d-flex justify-content-center align-items-center">
-              <span class="flaticon-goal"></span>
+      <div className="row">
+        <div className="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
+          <div className="d-block text-center">
+            <div className="icon d-flex justify-content-center align-items-center">
+              <span className="flaticon-goal"></span>
             </div>
-            <div class="media-body p-2 mt-3">
-              <h3 class="heading">Career Guidance</h3>
+            <div className="media-body p-2 mt-3">
+              <h3 className="heading">Career Guidance</h3>
               <p>We help you craft an impressive CV, optimize your LinkedIn profile, and master job interviews to land
                 your dream role in clinical research and life sciences.</p>
             </div>
           </div>
         </div>
-        <div class="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
-          <div class="d-block text-center">
-            <div class="icon d-flex justify-content-center align-items-center">
-              <span class="flaticon-stress"></span>
+        <div className="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
+          <div className="d-block text-center">
+            <div className="icon d-flex justify-content-center align-items-center">
+              <span className="flaticon-stress"></span>
             </div>
-            <div class="media-body p-2 mt-3">
-              <h3 class="heading">Industry Knowledge</h3>
+            <div className="media-body p-2 mt-3">
+              <h3 className="heading">Industry Knowledge</h3>
               <p>Our mentors provide in-depth insights into clinical research, pharmacovigilance, and clinical data
                 management, ensuring you’re job-ready with relevant knowledge.</p>
             </div>
           </div>
         </div>
-        <div class="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
-          <div class="d-block text-center">
-            <div class="icon d-flex justify-content-center align-items-center">
-              <span class="flaticon-crm"></span>
+        <div className="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
+          <div className="d-block text-center">
+            <div className="icon d-flex justify-content-center align-items-center">
+              <span className="flaticon-crm"></span>
             </div>
-            <div class="media-body p-2 mt-3">
-              <h3 class="heading">Networking Opportunities</h3>
+            <div className="media-body p-2 mt-3">
+              <h3 className="heading">Networking Opportunities</h3>
               <p>We provide opportunities to connect with professionals in the industry, helping you expand your network
                 and gain valuable industry contacts.</p>
             </div>
           </div>
         </div>
-        <div class="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
-          <div class="d-block text-center">
-            <div class="icon d-flex justify-content-center align-items-center">
-              <span class="flaticon-marriage"></span>
+        <div className="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
+          <div className="d-block text-center">
+            <div className="icon d-flex justify-content-center align-items-center">
+              <span className="flaticon-marriage"></span>
             </div>
-            <div class="media-body p-2 mt-3">
-              <h3 class="heading">Mock Interviews</h3>
+            <div className="media-body p-2 mt-3">
+              <h3 className="heading">Mock Interviews</h3>
               <p>Our mock interview sessions help you develop confidence, prepare for behavioral interviews, and gain
                 insights from hiring managers to stand out in the job market.</p>
             </div>
@@ -424,24 +444,24 @@ const Home = () => {
     </div>
   </section>
 
-  <section class="ftco-section bg-light">
-		<div class="container">
-			<div class="row justify-content-center pb-5 mb-3">
-				<div class="col-md-7 heading-section text-center ftco-animate">
+  <section className="ftco-section bg-light">
+		<div className="container">
+			<div className="row justify-content-center pb-5 mb-3">
+				<div className="col-md-7 heading-section text-center ftco-animate">
 					<h2>Why Clinidea Education Works?</h2>
-					<span class="subheading">Key Benefits of Our Program</span>
+					<span className="subheading">Key Benefits of Our Program</span>
 				</div>
 			</div>
 
 
-				<div class="row">
-					<div class="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
-						<div class="d-block text-center">
-							<div class="icon d-flex justify-content-center align-items-center">
-								<span class="flaticon-account"></span>
+				<div className="row">
+					<div className="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
+						<div className="d-block text-center">
+							<div className="icon d-flex justify-content-center align-items-center">
+								<span className="flaticon-account"></span>
 							</div>
-							<div class="media-body p-2 mt-3">
-								<h3 class="heading">Accountability</h3>
+							<div className="media-body p-2 mt-3">
+								<h3 className="heading">Accountability</h3>
 								<p>Stay focused and motivated with personalized mentorship and expert guidance tailored
 									to your career goals in clinical research, pharmacovigilance, and data management.
 								</p>
@@ -449,39 +469,39 @@ const Home = () => {
 						</div>
 					</div>
 
-					<div class="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
-						<div class="d-block text-center">
-							<div class="icon d-flex justify-content-center align-items-center">
-								<span class="flaticon-skills"></span>
+					<div className="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
+						<div className="d-block text-center">
+							<div className="icon d-flex justify-content-center align-items-center">
+								<span className="flaticon-skills"></span>
 							</div>
-							<div class="media-body p-2 mt-3">
-								<h3 class="heading">Expertise</h3>
+							<div className="media-body p-2 mt-3">
+								<h3 className="heading">Expertise</h3>
 								<p>Learn from industry professionals. Gain real-world knowledge that aligns with
 									employer expectations in the life sciences sector.</p>
 							</div>
 						</div>
 					</div>
 
-					<div class="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
-						<div class="d-block text-center">
-							<div class="icon d-flex justify-content-center align-items-center">
-								<span class="flaticon-performance"></span>
+					<div className="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
+						<div className="d-block text-center">
+							<div className="icon d-flex justify-content-center align-items-center">
+								<span className="flaticon-performance"></span>
 							</div>
-							<div class="media-body p-2 mt-3">
-								<h3 class="heading">Speed</h3>
+							<div className="media-body p-2 mt-3">
+								<h3 className="heading">Speed</h3>
 								<p>Accelerate your career path by gaining job-ready skills and knowledge that employers
 									are actively looking for in clinical research and life sciences.</p>
 							</div>
 						</div>
 					</div>
 
-					<div class="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
-						<div class="d-block text-center">
-							<div class="icon d-flex justify-content-center align-items-center">
-								<span class="flaticon-event"></span>
+					<div className="col-md-3 d-flex services align-self-stretch px-4 ftco-animate">
+						<div className="d-block text-center">
+							<div className="icon d-flex justify-content-center align-items-center">
+								<span className="flaticon-event"></span>
 							</div>
-							<div class="media-body p-2 mt-3">
-								<h3 class="heading">Career Delivery</h3>
+							<div className="media-body p-2 mt-3">
+								<h3 className="heading">Career Delivery</h3>
 								<p>Receive continuous mentorship, interview preparation, and job placement support until
 									you secure your first role in the industry.</p>
 							</div>
@@ -491,7 +511,8 @@ const Home = () => {
 
 		</div>
 	</section>
- ` }} />
+ 
+</>
 
       {studentImages.length > 0 && (
         <section className="ftco-section bg-dark py-5">
